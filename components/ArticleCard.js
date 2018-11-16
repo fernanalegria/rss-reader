@@ -3,6 +3,14 @@ import { Text, StyleSheet } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 
 export default class ArticleCard extends React.Component {
+  onClickReadMore = () => {
+    this.props.navigation.navigate('Article', {
+      title: this.props.title,
+      content: this.props.content,
+      image: this.props.image,
+      url: this.props.url,
+    });
+  };
   /**
    * Renders a clickable article row, which includes:
    * - Title
@@ -22,14 +30,7 @@ export default class ArticleCard extends React.Component {
         <Button
           buttonStyle={styles.button}
           title="Read more"
-          onPress={() =>
-            this.props.navigation.navigate('Article', {
-              title: this.props.title,
-              content: this.props.content,
-              image: this.props.image,
-              url: this.props.url,
-            })
-          }
+          onPress={this.onClickReadMore.bind(this)}
         />
       </Card>
     );

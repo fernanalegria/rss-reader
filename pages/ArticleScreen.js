@@ -6,6 +6,10 @@ export default class ArticleScreen extends React.Component {
     header: null,
   };
 
+  onViewInBrowser = url => {
+    Linking.openURL(url);
+  };
+
   /**
    * Renders the article detailed view, which includes:
    * - Title
@@ -41,7 +45,7 @@ export default class ArticleScreen extends React.Component {
           title="View in browser"
           color="#03A9F4"
           accessibilityLabel="Read in browser"
-          onPress={() => Linking.openURL(url)}
+          onPress={this.onViewInBrowser.bind(this, url)}
         />
       </View>
     );
