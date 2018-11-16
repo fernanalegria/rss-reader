@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { FlatList, ActivityIndicator, View, StyleSheet } from 'react-native';
+import {
+  FlatList,
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  TextInput,
+} from 'react-native';
 import ArticleCard from '../components/ArticleCard';
 import AttributionLink from '../components/AttributionLink';
 
@@ -28,18 +34,28 @@ export default class HomeScreen extends React.Component {
     )
       .then(response => response.json())
       .then(responseJson => {
-        let orderedArticles = responseJson.articles.sort(
+        this.orderedArticles = responseJson.articles.sort(
           (a, b) => new Date(a.publishedAt) < new Date(b.publishedAt)
         );
         this.setState({
           isLoading: false,
-          dataSource: orderedArticles,
+          dataSource: this.orderedArticles,
         });
       })
       .catch(error => {
         console.error(error);
       });
   }
+
+  onChangeInput = text => {
+    let filteredArticles = this.orderedArticles.filter(article => {
+      return article.title.includes(text);
+    });
+    this.setState({
+      isLoading: false,
+      dataSource: filteredArticles
+    });
+  };
 
   /**
    * Shows an spinner while RSS feed is being retrieved.
@@ -57,6 +73,12 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          placeholder=" Search"
+          onChangeText={this.onChangeInput}
+          underlineColorAndroid="transparent"
+        />
         <FlatList
           data={this.state.dataSource}
           renderItem={({ item }) => (
@@ -83,5 +105,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
+    alignItems: 'stretch',
+  },
+  input: {
+    margin: 15,
+    backgroundColor: '#fff',
+    color: '#696969',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#d6d7da',
   },
 });
