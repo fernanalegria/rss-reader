@@ -16,7 +16,7 @@ npm install -g expo-cli
 npm install
 ```
 
-## Running your React Native application
+### Running your React Native application
 
 Now, you can run the local server by typing:
 ```sh
