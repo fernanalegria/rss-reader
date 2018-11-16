@@ -1,0 +1,78 @@
+import * as React from 'react';
+import {
+  FlatList,
+  ActivityIndicator,
+  View,
+  StyleSheet,
+} from 'react-native';
+import ArticleCard from '../components/ArticleCard';
+import AttributionLink from '../components/AttributionLink';
+
+export default class HomeScreen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = { isLoading: true };
+  }
+
+  componentDidMount() {
+    return fetch(
+      'https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=dd9dbffdc22644a38587dedd8ec93111'
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        let orderedArticles = responseJson.articles.sort(
+          (a, b) => new Date(a.publishedAt) < new Date(b.publishedAt)
+        );
+        this.setState({
+          isLoading: false,
+          dataSource: orderedArticles,
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={this.state.dataSource}
+          renderItem={({ item }) => (
+            <ArticleCard
+              title={item.title}
+              content={item.description}
+              image={item.urlToImage}
+              url={item.url}
+              navigation={this.props.navigation}
+            />
+          )}
+          keyExtractor={({ id }, index) => id}
+        />
+        <AttributionLink
+          url="https://newsapi.org/"
+          text="Provided by News API"
+        />
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 20,
+  },
+});
