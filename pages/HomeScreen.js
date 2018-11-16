@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-  FlatList,
-  ActivityIndicator,
-  View,
-  StyleSheet,
-} from 'react-native';
+import { FlatList, ActivityIndicator, View, StyleSheet } from 'react-native';
 import ArticleCard from '../components/ArticleCard';
 import AttributionLink from '../components/AttributionLink';
 
@@ -13,11 +8,20 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
 
+  /**
+   * Home screen constructor.
+   * Makes spinner show up at start
+   * @param  {any} props Home screen properties
+   */
   constructor(props) {
     super(props);
     this.state = { isLoading: true };
   }
 
+  /**
+   * Called immediately after a component is mounted.
+   * @return {Promise<any>} JSON feed
+   */
   componentDidMount() {
     return fetch(
       'https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=dd9dbffdc22644a38587dedd8ec93111'
@@ -37,6 +41,11 @@ export default class HomeScreen extends React.Component {
       });
   }
 
+  /**
+   * Shows an spinner while RSS feed is being retrieved.
+   * Once retrieved, it displays the list of news.
+   * @return {JSX.Element}
+   */
   render() {
     if (this.state.isLoading) {
       return (

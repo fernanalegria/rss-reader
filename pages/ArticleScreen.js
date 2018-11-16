@@ -1,18 +1,19 @@
 import * as React from 'react';
-import {
-  Text,
-  View,
-  Linking,
-  StyleSheet,
-  Image,
-  Button,
-} from 'react-native';
+import { Text, View, Linking, StyleSheet, Image, Button } from 'react-native';
 
 export default class ArticleScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
+  /**
+   * Renders the article detailed view, which includes:
+   * - Title
+   * - Description
+   * - Image
+   * - Url to the web version
+   * @return {JSX.Element}
+   */
   render() {
     const { navigation } = this.props;
     const title = navigation.getParam('title', '');

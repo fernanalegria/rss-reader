@@ -3,6 +3,13 @@ import { Text, StyleSheet } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 
 export default class ArticleCard extends React.Component {
+  /**
+   * Renders a clickable article row, which includes:
+   * - Title
+   * - Short description
+   * - Image
+   * @return {JSX.Element}
+   */
   render() {
     return (
       <Card
